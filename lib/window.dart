@@ -30,6 +30,9 @@ const _kShowWindowControls = "ShowWindowControls";
 /// Enters fullscreen.
 const _kEnterFullscreen = "EnterFullscreen";
 
+/// Ignore focus.
+const _kIgnoreFocus = "IgnoreFocus";
+
 /// Exits fullscreen.
 const _kExitFullscreen = "ExitFullscreen";
 
@@ -154,6 +157,10 @@ class Window {
     }
 
     await _kChannel.invokeMethod(_kEnterFullscreen);
+  }
+
+  static Future<void> ignoreFocus() async {
+    await _kChannel.invokeMethod(_kIgnoreFocus);
   }
 
   /// Restores the Flutter window back to normal from fullscreen mode.

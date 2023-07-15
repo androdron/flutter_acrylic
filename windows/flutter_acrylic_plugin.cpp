@@ -85,6 +85,7 @@ static constexpr auto kSetEffect = "SetEffect";
 static constexpr auto kHideWindowControls = "HideWindowControls";
 static constexpr auto kShowWindowControls = "ShowWindowControls";
 static constexpr auto kEnterFullscreen = "EnterFullscreen";
+static constexpr auto kIgnoreFocus = "IgnoreFocus";
 static constexpr auto kExitFullscreen = "ExitFullscreen";
 
 class FlutterAcrylicPlugin : public flutter::Plugin {
@@ -276,7 +277,15 @@ void FlutterAcrylicPlugin::HandleMethodCall(
       ::ShowWindow(window, SW_MAXIMIZE);
     }
     result->Success();
-  } else if (call.method_name() == kExitFullscreen) {
+  }else if (call.method_name() == kIgnoreFocus) { 
+    HWND window = GetParentWindow();
+    LONG ex_style = ::GetWindowLong(window, GWL_EXSTYLE);
+    // if (ignore)
+    ex_style |= (WS_EX_NOACTIVATE);//(WS_EX_TRANSPARENT | WS_EX_LAYERED);
+    // else
+      // ex_style &= ~(WS_EX_NOACTIVATE);//~(WS_EX_TRANSPARENT | WS_EX_LAYERED);
+    ::SetWindowLongPtr(window, GWL_EXSTYLE, ex_style);
+  }else if (call.method_name() == kExitFullscreen) {
     if (is_fullscreen_) {
       is_fullscreen_ = false;
       HWND window = GetParentWindow();
