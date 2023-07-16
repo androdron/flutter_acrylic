@@ -179,11 +179,10 @@ void FlutterAcrylicPlugin::HandleMethodCall(
         std::get<int32_t>(arguments[flutter::EncodableValue("width")]);
     int32_t height =
         std::get<int32_t>(arguments[flutter::EncodableValue("height")]);
-    RECT last_rect_;
+    // RECT rect;
     HWND window = GetParentWindow();
     // ::GetWindowRect(window, &rect);
     // ::SetWindowPos(window, NULL, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
-    ::GetWindowRect(window, &last_rect_);
     ::SetWindowPos(
         window, HWND_TOPMOST, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
     // ::ShowWindow(window, SW_MAXIMIZE);
