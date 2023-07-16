@@ -21,6 +21,8 @@ const _kInitialize = "Initialize";
 /// Sets window effect.
 const _kSetEffect = "SetEffect";
 
+const _kSetSize = "SetSize";
+
 /// Hides window controls
 const _kHideWindowControls = "HideWindowControls";
 
@@ -159,10 +161,6 @@ class Window {
     await _kChannel.invokeMethod(_kEnterFullscreen);
   }
 
-  static Future<void> ignoreFocus() async {
-    await _kChannel.invokeMethod(_kIgnoreFocus);
-  }
-
   /// Restores the Flutter window back to normal from fullscreen mode.
   static Future<void> exitFullscreen() async {
     if (Platform.isMacOS) {
@@ -172,6 +170,21 @@ class Window {
     }
 
     await _kChannel.invokeMethod(_kExitFullscreen);
+  }
+
+  static Future<void> ignoreFocus() async {
+    await _kChannel.invokeMethod(_kIgnoreFocus);
+  }
+
+  static Future<void> setSize({required Size size}) async {
+    await _kCompleter.future;
+    await _kChannel.invokeMethod(
+      _kSetSize,
+      {
+        'height': size.height,
+        'width': size.width,
+      },
+    );
   }
 
   /// Gets the height of the titlebar.

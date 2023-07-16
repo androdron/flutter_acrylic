@@ -82,6 +82,7 @@ namespace {
 static constexpr auto kChannelName = "com.alexmercerind/flutter_acrylic";
 static constexpr auto kInitialize = "Initialize";
 static constexpr auto kSetEffect = "SetEffect";
+static constexpr auto kSetSize = "SetSize";
 static constexpr auto kHideWindowControls = "HideWindowControls";
 static constexpr auto kShowWindowControls = "ShowWindowControls";
 static constexpr auto kEnterFullscreen = "EnterFullscreen";
@@ -171,6 +172,18 @@ void FlutterAcrylicPlugin::HandleMethodCall(
         result->Error("-1", "FAIL_LOAD_DLL");
     } else
       result->Success();
+  } else if (call.method_name() == kSetSize) {
+    flutter::EncodableMap arguments =
+        std::get<flutter::EncodableMap>(*call.arguments());
+    int32_t width =
+        std::get<int32_t>(arguments[flutter::EncodableValue("width")]);
+    int32_t height =
+        std::get<int32_t>(arguments[flutter::EncodableValue("height")]);
+    RECT rect;
+    HWND window = GetParentWindow();
+    GetWindowRect(window, &rect);
+    SetWindowPos(window, NULL, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
+    
   } else if (call.method_name() == kSetEffect) {
     flutter::EncodableMap arguments =
         std::get<flutter::EncodableMap>(*call.arguments());
