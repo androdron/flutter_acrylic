@@ -175,18 +175,13 @@ void FlutterAcrylicPlugin::HandleMethodCall(
   } else if (call.method_name() == kSetSize) {
     flutter::EncodableMap arguments =
         std::get<flutter::EncodableMap>(*call.arguments());
-    int32_t width =
-        std::get<int32_t>(arguments[flutter::EncodableValue("width")]);
-    int32_t height =
-        std::get<int32_t>(arguments[flutter::EncodableValue("height")]);
-    // RECT rect;
+    int width =
+        std::get<int>(arguments[flutter::EncodableValue("width")]);
+    int height =
+        std::get<int>(arguments[flutter::EncodableValue("height")]);
     HWND window = GetParentWindow();
-    // ::GetWindowRect(window, &rect);
-    // ::SetWindowPos(window, NULL, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
     ::SetWindowPos(
-        window, HWND_TOPMOST, 0, 0, width, height, SWP_NOMOVE | SWP_NOZORDER | SWP_NOACTIVATE);
-    // ::ShowWindow(window, SW_MAXIMIZE);
-    // }
+        window, HWND_TOPMOST, 0, 0, width, height, SWP_SHOWWINDOW);
     result->Success();
     
   } else if (call.method_name() == kSetEffect) {
