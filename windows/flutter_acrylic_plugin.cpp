@@ -296,7 +296,7 @@ void FlutterAcrylicPlugin::HandleMethodCall(
   } else if (call.method_name() == kAlignBottom){ 
     // Get the screen width and height
     int screenWidth = GetSystemMetrics(SM_CXSCREEN);
-    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+    // int screenHeight = GetSystemMetrics(SM_CYSCREEN);
     HWND window = GetParentWindow();
     // Get the current window dimensions
     RECT windowRect;
