@@ -175,10 +175,10 @@ void FlutterAcrylicPlugin::HandleMethodCall(
   } else if (call.method_name() == kSetSize) {
     flutter::EncodableMap arguments =
         std::get<flutter::EncodableMap>(*call.arguments());
-    int width =
-        std::get<int>(arguments[flutter::EncodableValue("width")]);
-    int height =
-        std::get<int>(arguments[flutter::EncodableValue("height")]);
+    double width =
+        std::get<double>(arguments[flutter::EncodableValue("width")]);
+    double height =
+        std::get<double>(arguments[flutter::EncodableValue("height")]);
     HWND window = GetParentWindow();
     ::SetWindowPos(
         window, HWND_TOPMOST, 0, 0, width, height, SWP_SHOWWINDOW);
