@@ -86,6 +86,7 @@ static constexpr auto kSetSize = "SetSize";
 static constexpr auto kHideWindowControls = "HideWindowControls";
 static constexpr auto kShowWindowControls = "ShowWindowControls";
 static constexpr auto kEnterFullscreen = "EnterFullscreen";
+static constexpr auto kAlignBottom = "AlignBottom";
 static constexpr auto kIgnoreFocus = "IgnoreFocus";
 static constexpr auto kExitFullscreen = "ExitFullscreen";
 
@@ -292,7 +293,25 @@ void FlutterAcrylicPlugin::HandleMethodCall(
       ::ShowWindow(window, SW_MAXIMIZE);
     }
     result->Success();
-  }else if (call.method_name() == kIgnoreFocus) { 
+  } else if (call.method_name() == kAlignBottom){ 
+    // Get the screen width and height
+    int screenWidth = GetSystemMetrics(SM_CXSCREEN);
+    int screenHeight = GetSystemMetrics(SM_CYSCREEN);
+    HWND window = GetParentWindow();
+    // Get the current window dimensions
+    RECT windowRect;
+    ::GetWindowRect(window, &windowRect);
+    int width = windowRect.right - windowRect.left;
+    int height = windowRect.bottom - windowRect.top;
+
+    // Calculate the window position
+    int x = (screenWidth - width) / 2;  // Center horizontally
+    int y = screenHeight - height;      // Bottom of the screen
+
+    // Set the window position
+    ::SetWindowPos(window, NULL, x, y, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
+
+  } else if (call.method_name() == kIgnoreFocus) { 
     HWND window = GetParentWindow();
     LONG ex_style = ::GetWindowLong(window, GWL_EXSTYLE);
     // if (ignore)

@@ -32,6 +32,8 @@ const _kShowWindowControls = "ShowWindowControls";
 /// Enters fullscreen.
 const _kEnterFullscreen = "EnterFullscreen";
 
+const _kAlignBottom = "AlignBottom";
+
 /// Ignore focus.
 const _kIgnoreFocus = "IgnoreFocus";
 
@@ -148,6 +150,10 @@ class Window {
     }
 
     await _kChannel.invokeMethod(_kShowWindowControls);
+  }
+
+  static Future<void> alignBottom() async {
+    await _kChannel.invokeMethod(_kAlignBottom);
   }
 
   /// Makes the Flutter window fullscreen.
