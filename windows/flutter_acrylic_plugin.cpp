@@ -83,6 +83,7 @@ static constexpr auto kChannelName = "com.alexmercerind/flutter_acrylic";
 static constexpr auto kInitialize = "Initialize";
 static constexpr auto kSetEffect = "SetEffect";
 static constexpr auto kSetSize = "SetSize";
+static constexpr auto kRemoveSegment = "kRemoveSegment";
 static constexpr auto kHideWindowControls = "HideWindowControls";
 static constexpr auto kShowWindowControls = "ShowWindowControls";
 static constexpr auto kEnterFullscreen = "EnterFullscreen";
@@ -319,6 +320,34 @@ void FlutterAcrylicPlugin::HandleMethodCall(
 
     // Set the window position
     ::SetWindowPos(window, NULL, x, y, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
+
+  } else if (call.method_name() == kRemoveSegment){
+    flutter::EncodableMap arguments =
+        std::get<flutter::EncodableMap>(*call.arguments());
+    int sX =
+        std::get<int>(arguments[flutter::EncodableValue("startX")]);
+    int sY =
+        std::get<int>(arguments[flutter::EncodableValue("startY")]);
+    int eX =
+        std::get<int>(arguments[flutter::EncodableValue("endX")]);
+    int eY =
+        std::get<int>(arguments[flutter::EncodableValue("endY")]);
+
+    // int intWidth = static_cast<int>(width);
+    // int intHeight = static_cast<int>(height);
+    HWND window = GetParentWindow();
+
+    HRGN hRgn = CreateRectRgn(sX, sY, eX, eY);
+    // HRGN hRgn = CreateEllipticRgn(50, 50, 200, 200);  // Example: Elliptical hole from (50,50) to (200,200)
+    RECT rect;
+    GetWindowRect(window, &rect);
+
+    // Calculate the reverse region
+    HRGN hReverseRgn = CreateRectRgn(0, 0, rect.right - rect.left, rect.bottom - rect.top);
+    CombineRgn(hReverseRgn, hReverseRgn, hRgn, RGN_DIFF);
+
+    // Set the window region
+    SetWindowRgn(window, hReverseRgn, TRUE);
 
   } else if (call.method_name() == kIgnoreFocus) { 
     HWND window = GetParentWindow();

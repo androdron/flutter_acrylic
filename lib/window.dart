@@ -21,6 +21,8 @@ const _kInitialize = "Initialize";
 /// Sets window effect.
 const _kSetEffect = "SetEffect";
 
+const _kRemoveSegment = "RemoveSegment";
+
 const _kSetSize = "SetSize";
 
 /// Hides window controls
@@ -122,6 +124,24 @@ class Window {
           'A': color.alpha,
         },
         'dark': dark,
+      },
+    );
+  }
+
+  static Future<void> removeSegment({
+    required int startX,
+    required int startY,
+    required int endX,
+    required int endY,
+  }) async {
+    await _kCompleter.future;
+    await _kChannel.invokeMethod(
+      _kRemoveSegment,
+      {
+        'startX': startX,
+        'startY': startY,
+        'endX': endX,
+        'endY': endY,
       },
     );
   }
