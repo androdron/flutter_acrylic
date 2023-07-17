@@ -179,9 +179,11 @@ void FlutterAcrylicPlugin::HandleMethodCall(
         std::get<double>(arguments[flutter::EncodableValue("width")]);
     double height =
         std::get<double>(arguments[flutter::EncodableValue("height")]);
+    int intWidth = static_cast<int>(width);
+    int intHeight = static_cast<int>(height);
     HWND window = GetParentWindow();
     ::SetWindowPos(
-        window, HWND_TOPMOST, 0, 0, width, height, SWP_SHOWWINDOW);
+        window, HWND_TOPMOST, 0, 0, intWidth, intHeight, SWP_SHOWWINDOW);
     result->Success();
     
   } else if (call.method_name() == kSetEffect) {
