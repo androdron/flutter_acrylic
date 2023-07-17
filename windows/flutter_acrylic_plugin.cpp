@@ -304,15 +304,18 @@ void FlutterAcrylicPlugin::HandleMethodCall(
     int width = windowRect.right - windowRect.left;
     int height = windowRect.bottom - windowRect.top;
     
-    RECT taskbarRect;
-    HWND taskbar = FindWindow(TEXT("Shell_TrayWnd"), NULL);
-    if (taskbar != NULL && ::GetWindowRect(taskbar, &taskbarRect)) {
-        height += taskbarRect.bottom - taskbarRect.top;
-    }
+    // RECT taskbarRect;
+    // HWND taskbar = FindWindow(TEXT("Shell_TrayWnd"), NULL);
+    // if (taskbar != NULL && ::GetWindowRect(taskbar, &taskbarRect)) {
+    //     height += taskbarRect.bottom - taskbarRect.top;
+    // }
+    // Get the work area excluding the taskbar
+    RECT workAreaRect;
+    SystemParametersInfo(SPI_GETWORKAREA, 0, &workAreaRect, 0);
 
     // Calculate the window position
     int x = (screenWidth - width) / 2;  // Center horizontally
-    int y = screenHeight - height;      // Bottom of the screen
+    int y = workAreaRect.bottom - height;  // Above the taskbar
 
     // Set the window position
     ::SetWindowPos(window, NULL, x, y, width, height, SWP_NOZORDER | SWP_NOACTIVATE);
